@@ -15,8 +15,14 @@ import { RegisterSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import register from "@/actions/register";
+import { useState, useTransition } from "react";
+import FormStatus from "@/components/formStatuses/form-status";
+import { StatusType } from "@/lib/types";
 
 export default function RegisterForm() {
+  const [status, setStatus] = useState<StatusType | null>(null);
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -27,6 +33,15 @@ export default function RegisterForm() {
     },
   });
 
+  function onSubmit(values: z.infer<typeof RegisterSchema>) {
+    startTransition(async () => {
+      const data = await register(values);
+
+      setStatus(data);
+    });
+  }
+
+  console.log(status);
   return (
     <AuthCard
       headerTitle='📝 JournalMe'
@@ -36,10 +51,7 @@ export default function RegisterForm() {
       showSocial
     >
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(() => console.log("form submitted"))}
-          className='space-y-6'
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
           <div className='space-y-6'>
             <FormField
               control={form.control}
@@ -48,7 +60,12 @@ export default function RegisterForm() {
                 <FormItem>
                   <FormLabel>First name</FormLabel>
                   <FormControl>
-                    <Input {...field} type='text' placeholder='John' />
+                    <Input
+                      {...field}
+                      type='text'
+                      placeholder='John'
+                      disabled={isPending}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -61,7 +78,12 @@ export default function RegisterForm() {
                 <FormItem>
                   <FormLabel>Last name</FormLabel>
                   <FormControl>
-                    <Input {...field} type='text' placeholder='Doe' />
+                    <Input
+                      {...field}
+                      type='text'
+                      placeholder='Doe'
+                      disabled={isPending}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -78,6 +100,7 @@ export default function RegisterForm() {
                       {...field}
                       type='email'
                       placeholder='john.doe@gmail.com'
+                      disabled={isPending}
                     />
                   </FormControl>
                   <FormMessage />
@@ -91,13 +114,19 @@ export default function RegisterForm() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} type='password' placeholder='******' />
+                    <Input
+                      {...field}
+                      type='password'
+                      placeholder='******'
+                      disabled={isPending}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
+          <FormStatus message={status?.message} variant={status?.status} />
           <Button type='submit' className='w-full'>
             Register
           </Button>
