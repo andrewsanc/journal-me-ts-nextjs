@@ -3,6 +3,7 @@
 import React from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import Social from "./social";
+import BackButton from "./back-button";
 
 interface AuthCardProps {
   children: React.ReactNode;
@@ -34,11 +35,10 @@ export default function AuthCard(props: AuthCardProps) {
         </div>
       </CardHeader>
       <CardContent>{children}</CardContent>
-      {showSocial && (
-        <CardFooter>
-          <Social />
-        </CardFooter>
-      )}
+      <CardFooter className='flex flex-col gap-2'>
+        {showSocial && <Social />}
+        <BackButton label={backButtonLabel} href={backButtonHref} />
+      </CardFooter>
     </Card>
   );
 }
