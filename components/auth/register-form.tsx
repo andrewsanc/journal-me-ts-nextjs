@@ -11,26 +11,28 @@ import {
 } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { LoginSchema } from "@/schemas";
+import { RegisterSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
-export default function LoginForm() {
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+export default function RegisterForm() {
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       email: "",
       password: "",
+      firstName: "",
+      lastName: "",
     },
   });
 
   return (
     <AuthCard
       headerTitle='📝 JournalMe'
-      headerLabel='Welcome back'
-      backButtonLabel="Don't have an account?"
-      backButtonHref='/auth/register'
+      headerLabel='Register an account'
+      backButtonLabel='Already have an account?'
+      backButtonHref='/auth/login'
       showSocial
     >
       <Form {...form}>
@@ -39,6 +41,32 @@ export default function LoginForm() {
           className='space-y-6'
         >
           <div className='space-y-6'>
+            <FormField
+              control={form.control}
+              name='firstName'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First name</FormLabel>
+                  <FormControl>
+                    <Input {...field} type='text' placeholder='John' />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='lastName'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last name</FormLabel>
+                  <FormControl>
+                    <Input {...field} type='text' placeholder='Doe' />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name='email'
@@ -71,7 +99,7 @@ export default function LoginForm() {
             />
           </div>
           <Button type='submit' className='w-full'>
-            Login
+            Register
           </Button>
         </form>
       </Form>
