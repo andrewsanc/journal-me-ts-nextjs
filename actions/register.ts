@@ -9,9 +9,17 @@ import { db } from "@/lib/db";
 
 export default async function register(values: z.infer<typeof RegisterSchema>) {
   const validatedFields = RegisterSchema.safeParse(values);
+  const errorStatus: StatusType = {
+    status: "error",
+    message: "Invalid fields",
+  };
+  const successStatus: StatusType = {
+    status: "success",
+    message: "Registered successfully",
+  };
 
   if (!validatedFields.success) {
-    return { error: "Invalid fields" };
+    return errorStatus;
   }
 
   const { email, password, firstName, lastName } = validatedFields.data;
@@ -20,7 +28,11 @@ export default async function register(values: z.infer<typeof RegisterSchema>) {
   const existingUser = await getUserByEmail(email);
 
   if (existingUser) {
-    return { error: "Email already in use" };
+    const emailInUser: StatusType = {
+      status: "error",
+      message: "Email already in use",
+    };
+    return emailInUser;
   }
 
   await db.user.create({
@@ -34,7 +46,5 @@ export default async function register(values: z.infer<typeof RegisterSchema>) {
 
   // TODO: send verification token email
 
-  return !validatedFields.success
-    ? ({ status: "error", message: "Invalid fields" } as StatusType)
-    : ({ status: "success", message: "Register successful" } as StatusType);
+  return !validatedFields.success ? errorStatus : successStatus;
 }
