@@ -25,7 +25,7 @@ export default function AuthCard(props: AuthCardProps) {
   } = props;
 
   return (
-    <Card className='sm:w-[500px] w-[80%] bg-white'>
+    <Card className='sm:w-[500px] w-[80%]'>
       <CardHeader>
         <div className='w-full flex flex-col gap-y-4 items-center justify-center'>
           <h1 className='text-2xl text-gray-900 font-semibold tracking-wider'>
