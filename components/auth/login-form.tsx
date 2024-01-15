@@ -1,6 +1,6 @@
 "use client";
 
-import AuthCard from "@/components/auth/auth-card";
+import CardWrapper from "@/components/auth/card-wrapper";
 import {
   Form,
   FormControl,
@@ -8,19 +8,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
+} from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { LoginSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import login from "@/actions/login";
 import { StatusType } from "@/lib/types";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import FormStatus from "@/components/formStatuses/form-status";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
+  const searchParams = useSearchParams();
   const [status, setStatus] = useState<StatusType | null>(null);
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -39,8 +41,17 @@ export default function LoginForm() {
     });
   }
 
+  useEffect(() => {
+    if (searchParams.get("error") === "OAuthAccountNotLinked") {
+      setStatus({
+        status: "error",
+        message: "Email already in use with a different login provider",
+      });
+    }
+  }, [searchParams]);
+
   return (
-    <AuthCard
+    <CardWrapper
       headerTitle='📝 JournalMe'
       headerLabel='Welcome back'
       backButtonLabel="Don't have an account?"
@@ -93,6 +104,6 @@ export default function LoginForm() {
           </Button>
         </form>
       </Form>
-    </AuthCard>
+    </CardWrapper>
   );
 }

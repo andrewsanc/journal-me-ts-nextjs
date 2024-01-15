@@ -1,6 +1,6 @@
 "use client";
 
-import AuthCard from "@/components/auth/auth-card";
+import CardWrapper from "@/components/auth/card-wrapper";
 import {
   Form,
   FormControl,
@@ -8,13 +8,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
+} from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { RegisterSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import register from "@/actions/register";
 import { useState, useTransition } from "react";
 import FormStatus from "@/components/formStatuses/form-status";
@@ -41,7 +41,7 @@ export default function RegisterForm() {
   }
 
   return (
-    <AuthCard
+    <CardWrapper
       headerTitle='📝 JournalMe'
       headerLabel='Register an account'
       backButtonLabel='Already have an account?'
@@ -112,6 +112,6 @@ export default function RegisterForm() {
           </Button>
         </form>
       </Form>
-    </AuthCard>
+    </CardWrapper>
   );
 }

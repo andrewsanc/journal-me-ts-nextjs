@@ -1,11 +1,16 @@
 "use client";
 
 import React from "react";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import Social from "./social";
-import BackButton from "./back-button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import Social from "@/components/auth/social";
+import BackButton from "@/components/auth/back-button";
 
-interface AuthCardProps {
+interface CardWrapperProps {
   children: React.ReactNode;
   headerTitle: string;
   headerLabel: string;
@@ -14,7 +19,7 @@ interface AuthCardProps {
   showSocial?: boolean;
 }
 
-export default function AuthCard(props: AuthCardProps) {
+export default function CardWrapper(props: CardWrapperProps) {
   const {
     children,
     headerTitle,
