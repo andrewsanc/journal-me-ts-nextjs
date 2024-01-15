@@ -14,6 +14,11 @@ export default async function login(values: z.infer<typeof LoginSchema>) {
     message: "Invalid fields",
   };
 
+  const successStatus: StatusType = {
+    status: "success",
+    message: "Sign in successful",
+  };
+
   if (!validatedFields.success) {
     return errorStatus;
   }
@@ -26,13 +31,15 @@ export default async function login(values: z.infer<typeof LoginSchema>) {
       password,
       redirectTo: DEFAULT_LOGIN_REDIRECT,
     });
+
+    return successStatus;
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return { error: "Invalid credentials" };
+          return { ...errorStatus, message: "Invalid credentials" };
         default:
-          return { error: "Something went wrong" };
+          return { ...errorStatus, message: "Something went wrong" };
       }
     }
     throw error;

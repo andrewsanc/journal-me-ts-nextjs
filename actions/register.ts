@@ -22,7 +22,7 @@ export default async function register(values: z.infer<typeof RegisterSchema>) {
     return errorStatus;
   }
 
-  const { email, password, firstName, lastName } = validatedFields.data;
+  const { email, password, name } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const existingUser = await getUserByEmail(email);
@@ -37,8 +37,7 @@ export default async function register(values: z.infer<typeof RegisterSchema>) {
 
   await db.user.create({
     data: {
-      firstName,
-      lastName,
+      name,
       email,
       password: hashedPassword,
     },

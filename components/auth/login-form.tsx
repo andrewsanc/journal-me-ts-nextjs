@@ -88,7 +88,7 @@ export default function LoginForm() {
             />
           </div>
           <FormStatus message={status?.message} variant={status?.status} />
-          <Button type='submit' className='w-full'>
+          <Button type='submit' className='w-full' disabled={isPending}>
             Login
           </Button>
         </form>

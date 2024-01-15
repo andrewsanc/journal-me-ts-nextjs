@@ -28,8 +28,7 @@ export default function RegisterForm() {
     defaultValues: {
       email: "",
       password: "",
-      firstName: "",
-      lastName: "",
+      name: "",
     },
   });
 
@@ -41,7 +40,6 @@ export default function RegisterForm() {
     });
   }
 
-  console.log(status);
   return (
     <AuthCard
       headerTitle='📝 JournalMe'
@@ -55,33 +53,15 @@ export default function RegisterForm() {
           <div className='space-y-6'>
             <FormField
               control={form.control}
-              name='firstName'
+              name='name'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First name</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type='text'
-                      placeholder='John'
-                      disabled={isPending}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='lastName'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last name</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type='text'
-                      placeholder='Doe'
+                      placeholder='John Doe'
                       disabled={isPending}
                     />
                   </FormControl>
